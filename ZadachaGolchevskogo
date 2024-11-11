@@ -1,0 +1,55 @@
+#include <iostream>  
+#include <sstream>  
+#include <vector>  
+#include <string>  
+#include <limits>  
+
+using namespace std;  
+
+int main() {  
+    string userInput;  
+    cout << "Введите набор символов: ";
+    getline(cin, userInput);  // считываем целиком
+ 
+    size_t start = userInput.find_first_not_of(' ');  // находим непробельный символа
+    size_t end = userInput.find_last_not_of(' ');  // находим последний  непробельный символ
+ 
+    if (start == string::npos || end == string::npos) {  // проверяем, есть ли в строке слова
+        cout << "Слов нет." << endl;  
+        return 0;  
+    }  
+ 
+    userInput = userInput.substr(start, end - start + 1);  // обрезаем строку, убираем лишние пробелы
+ 
+    istringstream stream(userInput);  // моздаем поток для обработки строки
+    vector<string> words;  // "ектор" для хранения слов
+    string word;  //переменная для хранения текущего слова
+ 
+    while (stream >> word) {  // считываем слов
+        words.push_back(word);  // добавляем каждое слово в "вектор"
+    }  
+ 
+    if (words.empty()) {  //если "вектор" слов пуст
+        cout << "Слов нет." << endl;  
+        return 0;  
+    }  
+ 
+    size_t totalWords = words.size();  // общее количество слов
+    string shortestWord = words[0];  // первоначально задаем самое короткое слово первым словом
+    string longestWord = words[0];  //  первоначально задаем самое длинное слово первым словом
+ 
+    for (const auto& w : words) {  // проходим по всем словам в "векторе"
+        if (w.length() < shortestWord.length()) { 
+            shortestWord = w;
+        }  
+        if (w.length() > longestWord.length()) {
+            longestWord = w;  // обновляем самое длинное слово
+        }  
+    }  
+ 
+    cout << "Общее количество слов: " << totalWords << endl;  // выводим общее количество слов
+    cout << "Самое короткое слово: '" << shortestWord << "'" << endl;  // выводим самое короткое слово
+    cout << "Самое длинное слово: '" << longestWord << "'" << endl;  // выводим самое длинное слово
+ 
+    return 0;  
+}
